@@ -7,6 +7,11 @@
 
 Adafruit_SSD1306 display(OLED_RESET);
 
+int temperature_array[121];
+int pressure_array[121];
+int min_y = 0;
+int max_y = 0;
+
 void setup()   {                
   Serial.begin(9600);
 
@@ -23,15 +28,23 @@ void loop() {
 }
 
 void data_plot() {
-  if (value > max_value) {
-    max_value = value;
+  if (min_y == max_y) {
+    min_y = floor(value*0.5);
+    max_y = ceil(value*1.5);
+    min_val = value;
+    max_val = value;
   }
-  else if (value < min_value) {
-    min_value = value;
+  if (value > max_val) {
+    max_val = value;
+  }
+  else if (value < min_val) {
+    min_val = value;
   }
 }
 
 void init_plot() {
+  int min_y = floor(value*0.5)
+  int max_y = round(value*1.5)
   
 }
 
