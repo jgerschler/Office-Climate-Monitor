@@ -11,15 +11,21 @@ int temperature_array[121];
 int pressure_array[121];
 int min_y = 0;
 int max_y = 0;
+int min_val;
+int max_val;
+int value = 1;
 
 void setup()   {                
   Serial.begin(9600);
 
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x64 Chinese knockoff)
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
   display.clearDisplay();
 
-  testscrolltext();
+  data_plot();
+  delay(7000);
+  value = 5;
+  data_plot();
 
 }
 
@@ -36,34 +42,69 @@ void data_plot() {
   }
   if (value > max_val) {
     max_val = value;
+    max_y = ceil(value*1.5);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0,0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_y));
+    display.setCursor(3, 57);
+    display.println(String(min_y));
+    display.display();  
   }
   else if (value < min_val) {
     min_val = value;
+    min_y = floor(value*0.5);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0,0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_y));
+    display.setCursor(3, 57);
+    display.println(String(min_y));
+    display.display();  
+  }
+  else {
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0,0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_y));
+    display.setCursor(3, 57);
+    display.println(String(min_y));
+    display.display();  
   }
 }
 
-void init_plot() {
-  int min_y = floor(value*0.5)
-  int max_y = round(value*1.5)
-  
-}
 
-void testscrolltext(void) {
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.clearDisplay();
-  display.println("Temp:");
-  display.display();
-  delay(2000);
-  display.setCursor(0,0);
-  display.clearDisplay();
-  display.println("Pressure:");
-  display.drawLine(0, 19, 0, 60, WHITE);
-  display.setTextSize(1);
-  display.setCursor(3, 16);
-  display.println("50%");
-  display.setCursor(3, 57);
-  display.println("50%");
-  display.display();
-}
+//void testscrolltext(void) {
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0,0);
+//  display.clearDisplay();
+//  display.println("Temp:");
+//  display.display();
+//  delay(2000);
+//  display.setCursor(0,0);
+//  display.clearDisplay();
+//  display.println("Pressure:");
+//  display.drawLine(0, 19, 0, 60, WHITE);
+//  display.setTextSize(1);
+//  display.setCursor(3, 16);
+//  display.println("50%");
+//  display.setCursor(3, 57);
+//  display.println("50%");
+//  display.display();
+//}
