@@ -38,14 +38,24 @@ void testscrolltext(void) {
   display.clearDisplay();
   display.println("Temp:");
   display.display();
-  delay(5000);
-  display.setCursor(0,0);
-  display.clearDisplay();
-  display.println("Humidity:");
-  display.display();
-  delay(5000);
+  delay(2000);
   display.setCursor(0,0);
   display.clearDisplay();
   display.println("Pressure:");
+  display.drawLine(0, 19, 0, 60, WHITE);
+  display.setTextSize(1);
+  display.setCursor(3, 16);
+  display.println("50%");
+  display.setCursor(3, 57);
+  display.println("50%");
   display.display();
+//  for (int i = 5; i < 121; i++) {
+//    display.drawPixel(i, random(35, 41), WHITE);
+//    display.display();
+//    delay(100);
+//  }
+//  display.drawPixel(30, 50, WHITE);
+//  display.drawPixel(40, 40, WHITE);
+//  display.drawPixel(45, 20, WHITE);
+//  display.display();
 }
