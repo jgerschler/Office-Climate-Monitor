@@ -4,30 +4,34 @@
 #include <Adafruit_SSD1306.h>
 
 #define OLED_RESET 4
+
 Adafruit_SSD1306 display(OLED_RESET);
 
 void setup()   {                
   Serial.begin(9600);
 
-  // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
-  // init done
-  
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
-  //display.display();
-  //delay(2000);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x64 Chinese knockoff)
 
-  // Clear the buffer.
   display.clearDisplay();
 
-  // draw scrolling text
   testscrolltext();
 
 }
 
 void loop() {
+  
+}
+
+void data_plot() {
+  if (value > max_value) {
+    max_value = value;
+  }
+  else if (value < min_value) {
+    min_value = value;
+  }
+}
+
+void init_plot() {
   
 }
 
