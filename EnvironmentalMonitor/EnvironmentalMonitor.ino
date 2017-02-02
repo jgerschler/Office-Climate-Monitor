@@ -12,6 +12,8 @@
   3)Plot every minute environmental data.
 
   ALTER WIRING FOR DAISY-CHAINING I2C DEVICES!!!!!
+
+  add scaling!
 */
 
 //#include <SPI.h>//do we need this?
@@ -111,11 +113,6 @@ void loop() {
 }
 
 void temp_oled() {
-  if (index < 120) {
-    for (i=0, i<=index, i++) {
-      display.drawPixel(i+1, temperature_array[i], WHITE);
-    }
-  }
   if (min_y == max_y) {
     min_y = floor(val_temp * 0.5);
     max_y = ceil(val_temp * 1.5);
@@ -125,22 +122,12 @@ void temp_oled() {
   if (val_temp > max_val) {
     max_val = val_temp;
     max_y = ceil(val_temp * 1.5);
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.clearDisplay();
-    display.println("Temp:");
-    display.drawLine(0, 19, 0, 60, WHITE);
-    display.setTextSize(1);
-    display.setCursor(3, 16);
-    display.println(String(max_y));
-    display.setCursor(3, 57);
-    display.println(String(min_y));
-    display.display();
   }
-  else if (val_temp < min_val) {
+  if (val_temp < min_val) {
     min_val = val_temp;
     min_y = floor(val_temp * 0.5);
+  }
+  if (index < 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -152,8 +139,15 @@ void temp_oled() {
     display.println(String(max_y));
     display.setCursor(3, 57);
     display.println(String(min_y));
-    display.display();
+    for (i=0, i<=index, i++) {
+      display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
+    }
   }
+
+
+
+
+  
   else {
     display.setTextSize(2);
     display.setTextColor(WHITE);
