@@ -1,25 +1,3 @@
-/*Things that need to be done:
-  Set up millis timers:
-  1)Check every ten seconds if lights have been turned off.
-    a)inside loop, check if analog voltage has changed past threshold.
-      i)if yes, then turn on LCD backlight, and set pins high for ambient lighting.
-      ii)if lights are already on, keep on, etc.
-  1.5)Switch every ten seconds to secondary OLED display.
-    a)plot data held in respective array.
-  2)Check every minute for new environmental data.
-    a)update array
-    b)update LCD
-  3)Plot every minute environmental data.
-
-  ALTER WIRING FOR DAISY-CHAINING I2C DEVICES!!!!!
-
-  add scaling!
-
-  check array sizes
-
-  increment index
-*/
-
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -64,13 +42,13 @@ void setup()   {
   LCD.clear();
   LCD.backlight();//fix later
   LCD.setCursor(0, 0);
-  LCD.print("Temp: "+String(val_temp));
+  LCD.print("Temp: "+String(val_temp)+"*C");
   LCD.setCursor(0, 1);
-  LCD.print("hum: "+String(val_hum));
+  LCD.print("Humidity: "+String(val_hum)+"%");
   LCD.setCursor(0, 2);
-  LCD.print("pres: "+String(val_pres));
+  LCD.print("Pressure: "+String(val_pres)+" hPa");
   LCD.setCursor(0, 3);
-  LCD.print("alt: "+String(val_alt));
+  LCD.print("Altitude: "+String(val_alt)+" m");
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
@@ -79,13 +57,13 @@ void setup()   {
 void update_lcd() {
   LCD.clear();
   LCD.setCursor(0, 0);
-  LCD.print("Temp: "+String(val_temp));
+  LCD.print("Temp: "+String(val_temp)+"*C");
   LCD.setCursor(0, 1);
-  LCD.print("hum: "+String(val_hum));
+  LCD.print("Humidity: "+String(val_hum)+"%");
   LCD.setCursor(0, 2);
-  LCD.print("pres: "+String(val_pres));
+  LCD.print("Pressure: "+String(val_pres)+" hPa");
   LCD.setCursor(0, 3);
-  LCD.print("alt: "+String(val_alt));
+  LCD.print("Altitude: "+String(val_alt)+" m");
 }
 
 void read_sensor() {
@@ -102,7 +80,7 @@ void loop() {
 //    //check light -- do this last
 //    previousMillis = currentMillis;
 //  }
-  if (currentMillis - previousMillis >= 60000) {
+  if (currentMillis - previousMillis >= 10000) {
     previousMillis = currentMillis;
     //sample sensor
     read_sensor();
