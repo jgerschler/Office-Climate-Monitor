@@ -94,10 +94,6 @@ void read_sensor {
   val_hum = bme.readhum();
 }
 
-void update_arrays() {
-  if index
-}
-
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= 10000) {
@@ -148,8 +144,8 @@ void temp_oled() {
     min_temp_val = val_temp;
     min_temp_y = floor(val_temp * 0.5);
   }
-  //array isn't full, so just plot what's there
-  if (index <= 120) {
+  //array isn't full, or perfectly full, so just plot what's there
+  if (index-1 <= 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -161,17 +157,13 @@ void temp_oled() {
     display.println(String(max_temp_y));
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
-    for (i=0; i<=index; i++) {
+    for (i=0; i<=index-1; i++) {
       display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
     }
     display.display();
   }
   //array is full
   else {
-    for (i=0; i<120; i++) {//check numbers, imax
-      temp_array[i] = temp_array[i+1];
-    }
-    temp_array[120] = round(val_temp);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
