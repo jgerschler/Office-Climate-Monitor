@@ -20,7 +20,6 @@
   increment index
 */
 
-//#include <SPI.h>//do we need this?
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -29,13 +28,13 @@
 #include <Adafruit_BME280.h>
 
 #define OLED_RESET 4
-#define SEALEVELpres_HPA (1013.25)
+#define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme;
 Adafruit_SSD1306 display(OLED_RESET);
 LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
-int temperature_array[121];
+int temp_array[121];
 int pres_array[121];
 int hum_array[121];
 int min_temp_y = 0;
@@ -58,8 +57,6 @@ unsigned long previousMillis = 0;
 int index = 0;
 
 void setup()   {
-  //  Serial.begin(9600);
-
   read_sensor();
   
   LCD.begin(20, 4);
@@ -93,7 +90,7 @@ void update_lcd {
 void read_sensor {
   val_temp = bme.readTemperature();
   val_pres = bme.readpres() / 100.0F;
-  val_alt = bme.readalt(SEALEVELpres_HPA);
+  val_alt = bme.readalt(SEALEVELPRESSURE_HPA);
   val_hum = bme.readhum();
 }
 
@@ -104,30 +101,33 @@ void update_arrays() {
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= 10000) {
-    //things happening every ten seconds
     //refresh OLED
-    //check light
+    //check light -- do this last
     previousMillis = currentMillis;
   }
   if (currentMillis - previousMillis >= 60000) {
-    //things happening every minute --> update counter for arrays,
     previousMillis = currentMillis;
     //sample sensor
     read_sensor();
-    //update arrays
-    
     //update lcd
     update_lcd();
     //check if there is space in array
     if (index <= 120) {
       //array still has space
-      temperature_array[index] = round(val_temp);
+      temp_array[index] = round(val_temp);
       pres_array[index] = round(val_pres);
       hum_array[index] = round(val_hum);
-      
+      index+=1;
     }
     else {
-      //array is full
+      for (i=0; i<120; i++) {
+        temp_array[i] = temp_array[i+1];
+        pres_array[i] = pres_array[i+1];
+        hum_array[i] = hum_array[i+1];
+        temp_array[120] = round(val_temp);
+        pres_array[120] = round(val_pres);
+        hum_array[120] = round(val_hum);
+      }
 
     }
   }
@@ -163,16 +163,16 @@ void temp_oled() {
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
     for (i=0; i<=index; i++) {
-      display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
+      display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
     }
     display.display();
   }
   //array is full
   else {
     for (i=0; i<120; i++) {//check numbers, imax
-      temperature_array[i] = temperature_array[i+1];
+      temp_array[i] = temp_array[i+1];
     }
-    temperature_array[120] = round(val_temp);
+    temp_array[120] = round(val_temp);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -185,7 +185,7 @@ void temp_oled() {
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
     for (i=0; i<=120; i++) {
-      display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
+      display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
     }
     display.display();
   }
