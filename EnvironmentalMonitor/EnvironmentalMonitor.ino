@@ -41,6 +41,7 @@ float val_humidity;
 float val_pressure;
 float val_altitude;
 unsigned long previousMillis = 0;
+int index = 0;
 
 void setup()   {                
 //  Serial.begin(9600);
