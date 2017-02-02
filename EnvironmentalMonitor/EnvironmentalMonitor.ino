@@ -113,18 +113,18 @@ void loop() {
 void temp_oled() {
   if (index < 120) {
     for (i=0, i<=index, i++) {
-      display.drawPixel(10, 10, WHITE);
+      display.drawPixel(i+1, temperature_array[i], WHITE);
     }
   }
   if (min_y == max_y) {
-    min_y = floor(value * 0.5);
-    max_y = ceil(value * 1.5);
-    min_val = value;
-    max_val = value;
+    min_y = floor(val_temp * 0.5);
+    max_y = ceil(val_temp * 1.5);
+    min_val = val_temp;
+    max_val = val_temp;
   }
-  if (value > max_val) {
-    max_val = value;
-    max_y = ceil(value * 1.5);
+  if (val_temp > max_val) {
+    max_val = val_temp;
+    max_y = ceil(val_temp * 1.5);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -138,9 +138,9 @@ void temp_oled() {
     display.println(String(min_y));
     display.display();
   }
-  else if (value < min_val) {
-    min_val = value;
-    min_y = floor(value * 0.5);
+  else if (val_temp < min_val) {
+    min_val = val_temp;
+    min_y = floor(val_temp * 0.5);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
