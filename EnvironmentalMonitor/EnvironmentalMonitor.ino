@@ -38,8 +38,8 @@ LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 int temperature_array[121];
 int pressure_array[121];
 int humidity_array[121];
-int min_y = 0;
-int max_y = 0;
+int min_temp_y = 0;
+int max_temp_y = 0;
 int min_val;
 int max_val;
 int value = 1; //delete this later
@@ -53,17 +53,19 @@ int index = 0;
 void setup()   {
   //  Serial.begin(9600);
   //get data here before updating displays
+  read_sensor();
+  
   LCD.begin(20, 4);
   LCD.clear();
-  LCD.backlight();
+  LCD.backlight();//fix later
   LCD.setCursor(0, 0);
-  LCD.print("Temp:");//add variables here
+  LCD.print("Temp: "+String(val_temp));
   LCD.setCursor(0, 1);
-  LCD.print("Humidity:");
+  LCD.print("Humidity: "+String(val_humidity));
   LCD.setCursor(0, 2);
-  LCD.print("Pressure:");
+  LCD.print("Pressure: "+String(val_pressure));
   LCD.setCursor(0, 3);
-  LCD.print("Altitude:");
+  LCD.print("Altitude: "+String(val_altitude));
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
@@ -72,13 +74,13 @@ void setup()   {
 void update_lcd {
   LCD.clear();
   LCD.setCursor(0, 0);
-  LCD.print("Temp:");//add variables here
+  LCD.print("Temp: "+String(val_temp));
   LCD.setCursor(0, 1);
-  LCD.print("Humidity:");
+  LCD.print("Humidity: "+String(val_humidity));
   LCD.setCursor(0, 2);
-  LCD.print("Pressure:");
+  LCD.print("Pressure: "+String(val_pressure));
   LCD.setCursor(0, 3);
-  LCD.print("Altitude:");
+  LCD.print("Altitude: "+String(val_altitude));
 }
 
 void read_sensor {
@@ -86,6 +88,10 @@ void read_sensor {
   val_pressure = bme.readPressure() / 100.0F;
   val_altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
   val_humidity = bme.readHumidity();
+}
+
+void update_arrays() {
+  if index
 }
 
 void loop() {
@@ -101,6 +107,10 @@ void loop() {
     previousMillis = currentMillis;
     //sample sensor
     read_sensor();
+    //update arrays
+    
+    //update lcd
+    update_lcd();
     //check if there is space in array
     if (index <= 120) {
       //array still has space
@@ -118,19 +128,19 @@ void loop() {
 
 void temp_oled() {
   //update min, max, and scaling of window
-  if (min_y == max_y) {
-    min_y = floor(val_temp * 0.5);
-    max_y = ceil(val_temp * 1.5);
+  if (min_temp_y == max_temp_y) {
+    min_temp_y = floor(val_temp * 0.5);
+    max_temp_y = ceil(val_temp * 1.5);
     min_val = val_temp;
     max_val = val_temp;
   }
   if (val_temp > max_val) {
     max_val = val_temp;
-    max_y = ceil(val_temp * 1.5);
+    max_temp_y = ceil(val_temp * 1.5);
   }
   if (val_temp < min_val) {
     min_val = val_temp;
-    min_y = floor(val_temp * 0.5);
+    min_temp_y = floor(val_temp * 0.5);
   }
   //array isn't full, so just plot what's there
   if (index < 120) {
@@ -142,9 +152,9 @@ void temp_oled() {
     display.drawLine(0, 19, 0, 60, WHITE);
     display.setTextSize(1);
     display.setCursor(3, 16);
-    display.println(String(max_y));
+    display.println(String(max_temp_y));
     display.setCursor(3, 57);
-    display.println(String(min_y));
+    display.println(String(min_temp_y));
     for (i=0; i<=index; i++) {
       display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
     }
@@ -156,6 +166,21 @@ void temp_oled() {
       temperature_array[i] = temperature_array[i+1];
     }
     temperature_array[120] = round(val_temp);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_temp_y));
+    display.setCursor(3, 57);
+    display.println(String(min_temp_y));
+    for (i=0; i<=120; i++) {
+      display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
+    }
+    display.display();
   }
 
 
@@ -171,9 +196,9 @@ void temp_oled() {
     display.drawLine(0, 19, 0, 60, WHITE);
     display.setTextSize(1);
     display.setCursor(3, 16);
-    display.println(String(max_y));
+    display.println(String(max_temp_y));
     display.setCursor(3, 57);
-    display.println(String(min_y));
+    display.println(String(min_temp_y));
     display.display();
   }
 }
