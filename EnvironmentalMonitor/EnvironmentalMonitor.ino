@@ -96,11 +96,11 @@ void read_sensor {
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= 10000) {
-    //refresh OLED
-    //check light -- do this last
-    previousMillis = currentMillis;
-  }
+//  if (currentMillis - previousMillis >= 10000) {
+//    //refresh OLED
+//    //check light -- do this last
+//    previousMillis = currentMillis;
+//  }
   if (currentMillis - previousMillis >= 60000) {
     previousMillis = currentMillis;
     //sample sensor
@@ -120,11 +120,12 @@ void loop() {
         temp_array[i] = temp_array[i+1];
         pres_array[i] = pres_array[i+1];
         hum_array[i] = hum_array[i+1];
-        temp_array[120] = round(val_temp);
-        pres_array[120] = round(val_pres);
-        hum_array[120] = round(val_hum);
       }
+      temp_array[120] = round(val_temp);
+      pres_array[120] = round(val_pres);
+      hum_array[120] = round(val_hum);
     }
+  temp_oled();
   }
 }
 
@@ -158,7 +159,7 @@ void temp_oled() {
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
     for (i=0; i<=index-1; i++) {
-      display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
+      display.drawPixel(i+1, 41*(max_temp_y - temp_array[i])/(max_temp_y - min_temp_y) + 19, WHITE);// the formula scales the y-value to the correct range, customized for 128x64 display.
     }
     display.display();
   }
@@ -176,7 +177,7 @@ void temp_oled() {
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
     for (i=0; i<=120; i++) {
-      display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
+      display.drawPixel(i+1, 41*(max_temp_y - temp_array[i])/(max_temp_y - min_temp_y) + 19, WHITE);
     }
     display.display();
   }
