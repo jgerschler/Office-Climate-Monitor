@@ -14,6 +14,10 @@
   ALTER WIRING FOR DAISY-CHAINING I2C DEVICES!!!!!
 
   add scaling!
+
+  check array sizes
+
+  increment index
 */
 
 //#include <SPI.h>//do we need this?
@@ -113,6 +117,7 @@ void loop() {
 }
 
 void temp_oled() {
+  //update min, max, and scaling of window
   if (min_y == max_y) {
     min_y = floor(val_temp * 0.5);
     max_y = ceil(val_temp * 1.5);
@@ -127,6 +132,7 @@ void temp_oled() {
     min_val = val_temp;
     min_y = floor(val_temp * 0.5);
   }
+  //array isn't full, so just plot what's there
   if (index < 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);
@@ -139,9 +145,17 @@ void temp_oled() {
     display.println(String(max_y));
     display.setCursor(3, 57);
     display.println(String(min_y));
-    for (i=0, i<=index, i++) {
+    for (i=0; i<=index; i++) {
       display.drawPixel(i+1, temperature_array[i], WHITE);//fix scaling!
     }
+    display.display();
+  }
+  //array is full
+  else {
+    for (i=0; i<120; i++) {//check numbers, imax
+      temperature_array[i] = temperature_array[i+1];
+    }
+    temperature_array[120] = round(val_temp);
   }
 
 
