@@ -30,6 +30,7 @@ int max_y = 0;
 int min_val;
 int max_val;
 int value = 1;
+unsigned long previousMillis = 0;
 
 void setup()   {                
 //  Serial.begin(9600);
@@ -48,12 +49,6 @@ void setup()   {
   
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
-
-  data_plot();
-  delay(7000);
-  value = 5;
-  data_plot();
-
 }
 
 void update_lcd {
@@ -70,10 +65,21 @@ void update_lcd {
 
 
 void loop() {
-  
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= 10000) {
+    //things happening every ten seconds
+    previousMillis = currentMillis;
+  }
+  if (currentMillis - previousMillis >= 60000) {
+    //things happening every minute
+    previousMillis = currentMillis;
+  }
 }
 
 void update_oled() {
+//  if (i == 121) {
+//    i = 0;   
+//  }
   if (min_y == max_y) {
     min_y = floor(value*0.5);
     max_y = ceil(value*1.5);
@@ -127,24 +133,3 @@ void update_oled() {
     display.display();  
   }
 }
-
-
-//void testscrolltext(void) {
-//  display.setTextSize(2);
-//  display.setTextColor(WHITE);
-//  display.setCursor(0,0);
-//  display.clearDisplay();
-//  display.println("Temp:");
-//  display.display();
-//  delay(2000);
-//  display.setCursor(0,0);
-//  display.clearDisplay();
-//  display.println("Pressure:");
-//  display.drawLine(0, 19, 0, 60, WHITE);
-//  display.setTextSize(1);
-//  display.setCursor(3, 16);
-//  display.println("50%");
-//  display.setCursor(3, 57);
-//  display.println("50%");
-//  display.display();
-//}
