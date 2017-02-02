@@ -128,7 +128,6 @@ void loop() {
         pres_array[120] = round(val_pres);
         hum_array[120] = round(val_hum);
       }
-
     }
   }
 }
@@ -150,7 +149,7 @@ void temp_oled() {
     min_temp_y = floor(val_temp * 0.5);
   }
   //array isn't full, so just plot what's there
-  if (index < 120) {
+  if (index <= 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -187,25 +186,6 @@ void temp_oled() {
     for (i=0; i<=120; i++) {
       display.drawPixel(i+1, temp_array[i], WHITE);//fix scaling!
     }
-    display.display();
-  }
-
-
-
-
-  
-  else {
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.clearDisplay();
-    display.println("Temp:");
-    display.drawLine(0, 19, 0, 60, WHITE);
-    display.setTextSize(1);
-    display.setCursor(3, 16);
-    display.println(String(max_temp_y));
-    display.setCursor(3, 57);
-    display.println(String(min_temp_y));
     display.display();
   }
 }
