@@ -80,15 +80,12 @@ void loop() {
 //    //check light -- do this last
 //    previousMillis = currentMillis;
 //  }
-  if (currentMillis - previousMillis >= 10000) {
+  if (currentMillis - previousMillis >= 10000) {// change to 60000 later
     previousMillis = currentMillis;
-    //sample sensor
     read_sensor();
-    //update lcd
     update_lcd();
     //check if there is space in array
     if (index <= 120) {
-      //array still has space
       temp_array[index] = round(val_temp);
       pres_array[index] = round(val_pres);
       hum_array[index] = round(val_hum);
@@ -109,7 +106,6 @@ void loop() {
 }
 
 void temp_oled() {
-  //update min, max, and scaling of window
   if (min_temp_y == max_temp_y) {
     min_temp_y = floor(val_temp * 0.5);
     max_temp_y = ceil(val_temp * 1.5);
@@ -124,7 +120,7 @@ void temp_oled() {
     min_temp_val = val_temp;
     min_temp_y = floor(val_temp * 0.5);
   }
-  //array isn't full, or perfectly full, so just plot what's there
+  // array isn't full, or just full
   if (index-1 <= 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);
@@ -142,7 +138,7 @@ void temp_oled() {
     }
     display.display();
   }
-  //array is full
+  // array is full
   else {
     display.setTextSize(2);
     display.setTextColor(WHITE);
@@ -157,6 +153,108 @@ void temp_oled() {
     display.println(String(min_temp_y));
     for (int i=0; i<=120; i++) {
       display.drawPixel(i+1, 41*(max_temp_y - temp_array[i])/(max_temp_y - min_temp_y) + 19, WHITE);
+    }
+    display.display();
+  }
+}
+
+void pres_oled() {
+  if (min_pres_y == max_pres_y) {
+    min_pres_y = floor(val_pres * 0.5);
+    max_pres_y = ceil(val_pres * 1.5);
+    min_pres_val = val_pres;
+    max_pres_val = val_pres;
+  }
+  if (val_pres > max_pres_val) {
+    max_pres_val = val_pres;
+    max_pres_y = ceil(val_pres * 1.5);
+  }
+  if (val_pres < min_pres_val) {
+    min_pres_val = val_pres;
+    min_pres_y = floor(val_pres * 0.5);
+  }
+  if (index-1 <= 120) {
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_pres_y));
+    display.setCursor(3, 57);
+    display.println(String(min_pres_y));
+    for (int i=0; i<=index-1; i++) {
+      display.drawPixel(i+1, 41*(max_pres_y - pres_array[i])/(max_pres_y - min_pres_y) + 19, WHITE);
+    }
+    display.display();
+  }
+  else {
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_pres_y));
+    display.setCursor(3, 57);
+    display.println(String(min_pres_y));
+    for (int i=0; i<=120; i++) {
+      display.drawPixel(i+1, 41*(max_pres_y - pres_array[i])/(max_pres_y - min_pres_y) + 19, WHITE);
+    }
+    display.display();
+  }
+}
+
+void hum_oled() {
+  if (min_hum_y == max_hum_y) {
+    min_hum_y = floor(val_hum * 0.5);
+    max_hum_y = ceil(val_hum * 1.5);
+    min_hum_val = val_hum;
+    max_hum_val = val_hum;
+  }
+  if (val_hum > max_hum_val) {
+    max_hum_val = val_hum;
+    max_hum_y = ceil(val_hum * 1.5);
+  }
+  if (val_hum < min_hum_val) {
+    min_hum_val = val_hum;
+    min_hum_y = floor(val_hum * 0.5);
+  }
+  if (index-1 <= 120) {
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_hum_y));
+    display.setCursor(3, 57);
+    display.println(String(min_hum_y));
+    for (int i=0; i<=index-1; i++) {
+      display.drawPixel(i+1, 41*(max_hum_y - hum_array[i])/(max_hum_y - min_hum_y) + 19, WHITE);
+    }
+    display.display();
+  }
+  else {
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.clearDisplay();
+    display.println("Temp:");
+    display.drawLine(0, 19, 0, 60, WHITE);
+    display.setTextSize(1);
+    display.setCursor(3, 16);
+    display.println(String(max_hum_y));
+    display.setCursor(3, 57);
+    display.println(String(min_hum_y));
+    for (int i=0; i<=120; i++) {
+      display.drawPixel(i+1, 41*(max_hum_y - hum_array[i])/(max_hum_y - min_hum_y) + 19, WHITE);
     }
     display.display();
   }
