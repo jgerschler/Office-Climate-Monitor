@@ -4,7 +4,7 @@
 LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
 void setup() {
-    LCD.begin(16, 2);  // 16 lines by 2 rows
+    LCD.begin(20, 4);  // 16 lines by 2 rows
     LCD.clear();
     LCD.backlight();
     LCD.setCursor(0,0);

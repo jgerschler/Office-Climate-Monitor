@@ -57,6 +57,7 @@ unsigned long previousMillis = 0;
 int index = 0;
 
 void setup()   {
+  bme.begin();
   read_sensor();
   
   LCD.begin(20, 4);
@@ -75,7 +76,7 @@ void setup()   {
   display.clearDisplay();
 }
 
-void update_lcd {
+void update_lcd() {
   LCD.clear();
   LCD.setCursor(0, 0);
   LCD.print("Temp: "+String(val_temp));
@@ -87,11 +88,11 @@ void update_lcd {
   LCD.print("alt: "+String(val_alt));
 }
 
-void read_sensor {
+void read_sensor() {
   val_temp = bme.readTemperature();
-  val_pres = bme.readpres() / 100.0F;
-  val_alt = bme.readalt(SEALEVELPRESSURE_HPA);
-  val_hum = bme.readhum();
+  val_pres = bme.readPressure() / 100.0F;
+  val_alt = bme.readAltitude(SEALEVELPRESSURE_HPA);
+  val_hum = bme.readHumidity();
 }
 
 void loop() {
@@ -116,7 +117,7 @@ void loop() {
       index+=1;
     }
     else {
-      for (i=0; i<120; i++) {
+      for (int i=0; i<120; i++) {
         temp_array[i] = temp_array[i+1];
         pres_array[i] = pres_array[i+1];
         hum_array[i] = hum_array[i+1];
@@ -158,7 +159,7 @@ void temp_oled() {
     display.println(String(max_temp_y));
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
-    for (i=0; i<=index-1; i++) {
+    for (int i=0; i<=index-1; i++) {
       display.drawPixel(i+1, 41*(max_temp_y - temp_array[i])/(max_temp_y - min_temp_y) + 19, WHITE);// the formula scales the y-value to the correct range, customized for 128x64 display.
     }
     display.display();
@@ -176,7 +177,7 @@ void temp_oled() {
     display.println(String(max_temp_y));
     display.setCursor(3, 57);
     display.println(String(min_temp_y));
-    for (i=0; i<=120; i++) {
+    for (int i=0; i<=120; i++) {
       display.drawPixel(i+1, 41*(max_temp_y - temp_array[i])/(max_temp_y - min_temp_y) + 19, WHITE);
     }
     display.display();
