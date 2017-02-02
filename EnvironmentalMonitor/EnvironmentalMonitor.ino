@@ -29,30 +29,37 @@
 #include <Adafruit_BME280.h>
 
 #define OLED_RESET 4
-#define SEALEVELPRESSURE_HPA (1013.25)
+#define SEALEVELpres_HPA (1013.25)
 
 Adafruit_BME280 bme;
 Adafruit_SSD1306 display(OLED_RESET);
 LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
 int temperature_array[121];
-int pressure_array[121];
-int humidity_array[121];
+int pres_array[121];
+int hum_array[121];
 int min_temp_y = 0;
 int max_temp_y = 0;
-int min_val;
-int max_val;
-int value = 1; //delete this later
+int min_hum_y = 0;
+int max_hum_y = 0;
+int min_pres_y = 0;
+int max_pres_y = 0;
+int min_temp_val;
+int max_temp_val;
+int min_hum_val;
+int max_hum_val;
+int min_pres_val;
+int max_pres_val;
 float val_temp;
-float val_humidity;
-float val_pressure;
-float val_altitude;
+float val_hum;
+float val_pres;
+float val_alt;
 unsigned long previousMillis = 0;
 int index = 0;
 
 void setup()   {
   //  Serial.begin(9600);
-  //get data here before updating displays
+
   read_sensor();
   
   LCD.begin(20, 4);
@@ -61,11 +68,11 @@ void setup()   {
   LCD.setCursor(0, 0);
   LCD.print("Temp: "+String(val_temp));
   LCD.setCursor(0, 1);
-  LCD.print("Humidity: "+String(val_humidity));
+  LCD.print("hum: "+String(val_hum));
   LCD.setCursor(0, 2);
-  LCD.print("Pressure: "+String(val_pressure));
+  LCD.print("pres: "+String(val_pres));
   LCD.setCursor(0, 3);
-  LCD.print("Altitude: "+String(val_altitude));
+  LCD.print("alt: "+String(val_alt));
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
@@ -76,18 +83,18 @@ void update_lcd {
   LCD.setCursor(0, 0);
   LCD.print("Temp: "+String(val_temp));
   LCD.setCursor(0, 1);
-  LCD.print("Humidity: "+String(val_humidity));
+  LCD.print("hum: "+String(val_hum));
   LCD.setCursor(0, 2);
-  LCD.print("Pressure: "+String(val_pressure));
+  LCD.print("pres: "+String(val_pres));
   LCD.setCursor(0, 3);
-  LCD.print("Altitude: "+String(val_altitude));
+  LCD.print("alt: "+String(val_alt));
 }
 
 void read_sensor {
   val_temp = bme.readTemperature();
-  val_pressure = bme.readPressure() / 100.0F;
-  val_altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
-  val_humidity = bme.readHumidity();
+  val_pres = bme.readpres() / 100.0F;
+  val_alt = bme.readalt(SEALEVELpres_HPA);
+  val_hum = bme.readhum();
 }
 
 void update_arrays() {
@@ -115,8 +122,8 @@ void loop() {
     if (index <= 120) {
       //array still has space
       temperature_array[index] = round(val_temp);
-      pressure_array[index] = round(val_pressure);
-      humidity_array[index] = round(val_humidity);
+      pres_array[index] = round(val_pres);
+      hum_array[index] = round(val_hum);
       
     }
     else {
@@ -131,15 +138,15 @@ void temp_oled() {
   if (min_temp_y == max_temp_y) {
     min_temp_y = floor(val_temp * 0.5);
     max_temp_y = ceil(val_temp * 1.5);
-    min_val = val_temp;
-    max_val = val_temp;
+    min_temp_val = val_temp;
+    max_temp_val = val_temp;
   }
-  if (val_temp > max_val) {
-    max_val = val_temp;
+  if (val_temp > max_temp_val) {
+    max_temp_val = val_temp;
     max_temp_y = ceil(val_temp * 1.5);
   }
-  if (val_temp < min_val) {
-    min_val = val_temp;
+  if (val_temp < min_temp_val) {
+    min_temp_val = val_temp;
     min_temp_y = floor(val_temp * 0.5);
   }
   //array isn't full, so just plot what's there
