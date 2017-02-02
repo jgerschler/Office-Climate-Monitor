@@ -10,6 +10,8 @@ Set up millis timers:
     a)update array
     b)update LCD
   3)Plot every minute environmental data.
+
+  ALTER WIRING FOR DAISY-CHAINING I2C DEVICES!!!!!
 */
 
 //#include <SPI.h>//do we need this?
@@ -17,9 +19,13 @@ Set up millis timers:
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <LiquidCrystal_I2C.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 
 #define OLED_RESET 4
+#define SEALEVELPRESSURE_HPA (1013.25)
 
+Adafruit_BME280 bme;
 Adafruit_SSD1306 display(OLED_RESET);
 LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
@@ -29,7 +35,11 @@ int min_y = 0;
 int max_y = 0;
 int min_val;
 int max_val;
-int value = 1;
+int value = 1; //delete this later
+float val_temp;
+float val_humidity;
+float val_pressure;
+float val_altitude;
 unsigned long previousMillis = 0;
 
 void setup()   {                
@@ -63,6 +73,12 @@ void update_lcd {
   LCD.print("Altitude:");
 }
 
+void read_sensor {
+  val_temp = bme.readTemperature();
+  val_pressure = bme.readPressure() / 100.0F;
+  val_altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
+  val_humidity = bme.readHumidity();
+}
 
 void loop() {
   unsigned long currentMillis = millis();
@@ -71,7 +87,7 @@ void loop() {
     previousMillis = currentMillis;
   }
   if (currentMillis - previousMillis >= 60000) {
-    //things happening every minute
+    //things happening every minute --> update counter for arrays, 
     previousMillis = currentMillis;
   }
 }
