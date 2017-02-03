@@ -33,6 +33,7 @@ unsigned long timer1_Millis = 0;
 unsigned long timer2_Millis = 0;
 byte index = 0;
 bool oled_disp = 0;
+bool backlight = 0;
 
 void setup()   {
   bme.begin();
@@ -54,7 +55,6 @@ void setup()   {
 }
 
 void update_lcd() {
-  LCD.backlight();
   LCD.clear();
   LCD.setCursor(0, 0);
   LCD.print("Temp: "+String(val_temp)+"*C");
@@ -75,9 +75,9 @@ void read_sensor() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - timer1_Millis >= 5000) {// change to 10000 later
+  if (currentMillis - timer1_Millis >= 10000) {
     timer1_Millis = currentMillis;
-    //check lights here
+    //if (backlight == 0 && 
     if (oled_disp == 0) {
       temp_oled();
       oled_disp = 1;
@@ -87,7 +87,7 @@ void loop() {
       oled_disp = 0;
     }
   }
-  if (currentMillis - timer2_Millis >= 10000) {// change to 60000 later
+  if (currentMillis - timer2_Millis >= 60000) {
     timer2_Millis = currentMillis;
     read_sensor();
     update_lcd();
@@ -123,7 +123,7 @@ void temp_oled() {
     min_temp_val = val_temp;
     min_temp_y = floor(val_temp * 0.5);
   }
-  // array isn't full, or just full
+  // array isn't full, or just barely full
   if (index-1 <= 120) {
     display.setTextSize(2);
     display.setTextColor(WHITE);

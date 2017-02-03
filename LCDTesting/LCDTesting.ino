@@ -4,9 +4,9 @@
 LiquidCrystal_I2C LCD(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
 void setup() {
-    LCD.begin(20, 4);  // 16 lines by 2 rows
+    LCD.begin(20, 4);  // 20 lines by 4 rows
     LCD.clear();
-    LCD.backlight();
+    LCD.setBacklight(0);
     LCD.setCursor(0,0);
     LCD.print("Hello Line 1");
     LCD.setCursor(0,1);
@@ -14,7 +14,9 @@ void setup() {
 }
 
 void loop() {
-    delay(500);
+    LCD.setBacklight(0);
+    delay(1000);
+    LCD.setBacklight(1);
     LCD.clear();
     LCD.home();
     LCD.print(millis());
