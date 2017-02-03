@@ -31,7 +31,8 @@ float val_temp;
 float val_hum;
 float val_pres;
 float val_alt;
-unsigned long previousMillis = 0;
+unsigned long timer1_Millis = 0;
+unsigned long timer2_Millis = 0;
 byte index = 0;
 byte oled_disp = 0;
 
@@ -76,8 +77,8 @@ void read_sensor() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= 5000) {// change to 10000 later
-    previousMillis = currentMillis;
+  if (currentMillis - timer1_Millis >= 5000) {// change to 10000 later
+    timer1_Millis = currentMillis;
     //check lights here
     if (oled_disp == 0) {
       temp_oled();
@@ -92,8 +93,8 @@ void loop() {
       oled_disp = 0;
     }
   }
-  if (currentMillis - previousMillis >= 10000) {// change to 60000 later
-    previousMillis = currentMillis;
+  if (currentMillis - timer2_Millis >= 10000) {// change to 60000 later
+    timer2_Millis = currentMillis;
     read_sensor();
     update_lcd();
     //check if there is space in array
