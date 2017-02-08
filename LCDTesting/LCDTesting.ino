@@ -20,4 +20,5 @@ void loop() {
     LCD.clear();
     LCD.home();
     LCD.print(millis());
+    delay(1000);
 }
