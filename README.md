@@ -7,11 +7,11 @@ A couple important troubleshooting tips:
 
 -Remember to install all required libraries:
 
-Adafruit-GFX
-Adafruit_Sensor
-Adafruit_BME280
-Adafruit_SSD1306
-NewliquidCrystal (by fmalpartida)
+*Adafruit-GFX
+*Adafruit_Sensor
+*Adafruit_BME280
+*Adafruit_SSD1306
+*NewliquidCrystal (by fmalpartida)
 
 These were the libraries used in this project, but your needs will depend on the hardware you are using.
 
