@@ -3,9 +3,9 @@
 #include <Adafruit_SSD1306.h>
 #include <LiquidCrystal_I2C.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
+#include <Adafruit_BME280.h>// NOTE: you may need to change I2C address in library from 0x77 to 0x76, depending on which sensor you're using. You'll see a reported pressure of 0, or an altitude of 44300m if the address is incorrect.
 
-#define SEALEVELPRESSURE_HPA (1030.00)//modify with local sea level pressure -- normal is 1013.25 hPa
+#define SEALEVELPRESSURE_HPA (1013.25)//modify with local sea level pressure -- normal is 1013.25 hPa
 
 Adafruit_BME280 bme;
 Adafruit_SSD1306 display(4);
@@ -63,7 +63,7 @@ void read_sensor() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - timer2_Millis >= 60000) {
+  if (currentMillis - timer2_Millis >= 240000) {
     timer2_Millis = currentMillis;
     read_sensor();
     update_lcd();
@@ -84,18 +84,18 @@ void loop() {
 
 void temp_oled() {
   if (min_temp_y == max_temp_y) {
-    min_temp_y = floor(val_temp * 0.8);
-    max_temp_y = ceil(val_temp * 1.2);
+    min_temp_y = floor(val_temp * 0.9);
+    max_temp_y = ceil(val_temp * 1.1);
     min_temp_val = val_temp;
     max_temp_val = val_temp;
   }
   if (val_temp > max_temp_val) {
     max_temp_val = val_temp;
-    max_temp_y = ceil(val_temp * 1.2);
+    max_temp_y = ceil(val_temp * 1.1);
   }
   if (val_temp < min_temp_val) {
     min_temp_val = val_temp;
-    min_temp_y = floor(val_temp * 0.8);
+    min_temp_y = floor(val_temp * 0.9);
   }
   // array isn't full, or just barely full
   if (index-1 <= 100) {
