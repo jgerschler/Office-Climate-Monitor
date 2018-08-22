@@ -124,7 +124,7 @@ public void setup() {
   }
 
   // Setup for the fourth plot 
-  plot4 = new GPlot(this);
+  /*plot4 = new GPlot(this);
   plot4.setPos(370, 350);
   plot4.setYLim(-0.005, 0.1);
   plot4.getTitle().setText("Uniform distribution (" + str(uniformCounter) + " points)");
@@ -133,7 +133,7 @@ public void setup() {
   plot4.getXAxis().getAxisLabel().setText("x variable");
   plot4.getYAxis().getAxisLabel().setText("Relative probability");
   plot4.setPoints(points4);
-  plot4.startHistograms(GPlot.VERTICAL);
+  plot4.startHistograms(GPlot.VERTICAL);*/
 
   // Setup the mouse actions
   plot1.activatePanning();
@@ -141,7 +141,7 @@ public void setup() {
   plot1.activatePointLabels();
   plot2.activateZooming(1.5);
   plot3.activateCentering(LEFT, GPlot.CTRLMOD);
-  plot4.activateZooming();
+  /*plot4.activateZooming();*/
 
   // Load some images and shapes to use later in the plots
   mug = loadImage("beermug.png");
@@ -226,7 +226,7 @@ public void draw() {
 
 
   // Actions over the fourth plot (scrolling)
-  if (plot4.isOverBox(mouseX, mouseY)) {
+ /* if (plot4.isOverBox(mouseX, mouseY)) {
     // Get the cursor relative position inside the inner plot area
     float[] relativePos = plot4.getRelativePlotPosAt(mouseX, mouseY);
 
@@ -251,10 +251,10 @@ public void draw() {
   }
   else {
     plot4.setBoxBgColor(color(200, 50));
-  }
+  }*/
 
   // Add one more point to the uniform stack
-  index = int(random(uniformStack.length));
+/*  index = int(random(uniformStack.length));
 
   if (index >= 0 && index < uniformStack.length) {
     uniformStack[index]++;
@@ -268,15 +268,15 @@ public void draw() {
 
     plot4.setPoints(points4);
     plot4.getTitle().setText("Uniform distribution (" + str(uniformCounter) + " points)");
-  }
+  }*/
 
   // Draw the forth plot  
-  plot4.beginDraw();
+/*  plot4.beginDraw();
   plot4.drawBackground();
   plot4.drawBox();
   plot4.drawXAxis();
   plot4.drawYAxis();
   plot4.drawTitle();
   plot4.drawHistograms();
-  plot4.endDraw();
+  plot4.endDraw();*/
 }
