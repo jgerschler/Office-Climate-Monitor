@@ -13,7 +13,7 @@ public PShape star;
 public Random r;
 
 public void setup() {
-  size(1024, 768);
+  size(1366, 768);
 
 
 
@@ -38,8 +38,8 @@ public void setup() {
 
   // Setup for the second plot 
   plot2 = new GPlot(this);
-  plot2.setPos(460, 0);
-  plot2.setDim(250, 250);
+  plot2.setPos(10, 10);
+  plot2.setDim(1346, 250);
   plot2.getTitle().setText("Mouse position");
   plot2.getXAxis().getAxisLabel().setText("mouseX");
   plot2.getYAxis().getAxisLabel().setText("-mouseY");
