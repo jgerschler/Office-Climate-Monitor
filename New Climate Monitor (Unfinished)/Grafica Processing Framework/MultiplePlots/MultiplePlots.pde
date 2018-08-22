@@ -13,26 +13,9 @@ public PShape star;
 public Random r;
 
 public void setup() {
-  size(850, 660);
+  size(1024, 768);
 
-  // Prepare the points for the first plot  
-  GPointsArray points1a = new GPointsArray(500);
-  GPointsArray points1b = new GPointsArray(500);
-  GPointsArray points1c = new GPointsArray(500);
 
-  for (int i = 0; i < 500; i++) {
-    points1a.add(i, noise(0.1*i) + 1, "point " + i);
-    points1b.add(i, noise(500 + 0.1*i) + 0.5, "point " + i);
-    points1c.add(i, noise(1000 + 0.1*i), "point " + i);
-  }
-
-  // Create a polygon to display inside the plot  
-  polygonPoints = new GPointsArray(5);
-  polygonPoints.add(2, 0.15);
-  polygonPoints.add(6, 0.12);
-  polygonPoints.add(15, 0.3);
-  polygonPoints.add(8, 0.6);
-  polygonPoints.add(1.5, 0.5);
 
   // Setup for the first plot
   plot1 = new GPlot(this);
@@ -61,27 +44,6 @@ public void setup() {
   plot2.getXAxis().getAxisLabel().setText("mouseX");
   plot2.getYAxis().getAxisLabel().setText("-mouseY");
 
-
-  // Prepare the points for the third plot
-  gaussianStack = new float[10];
-  gaussianCounter = 0;
-  r = new Random();
-
-  for (int i = 0; i < 20; i++) {
-    int index = int(gaussianStack.length/2 + (float) r.nextGaussian());
-
-    if (index >= 0 && index < gaussianStack.length) {
-      gaussianStack[index]++;
-      gaussianCounter++;
-    }
-  }
-
-  GPointsArray points3 = new GPointsArray(gaussianStack.length);
-
-  for (int i = 0; i < gaussianStack.length; i++) {
-    points3.add(i + 1 - gaussianStack.length/2.0, gaussianStack[i]/gaussianCounter, "H" + i);
-  }
-
   // Setup for the third plot 
   plot3 = new GPlot(this);
   plot3.setPos(0, 300);
@@ -104,27 +66,9 @@ public void setup() {
   }
   );
 
-  // Prepare the points for the fourth plot  
-  uniformStack = new float[30];
-  uniformCounter = 0;
-
-  for (int i = 0; i < 20; i++) {
-    int index = int(uniformStack.length/2 + random(uniformStack.length));
-
-    if (index >= 0 && index < uniformStack.length) {
-      uniformStack[index]++;
-      uniformCounter++;
-    }
-  }
-
-  GPointsArray points4 = new GPointsArray(uniformStack.length);
-
-  for (int i = 0; i < uniformStack.length; i++) {
-    points4.add(i + 1 - uniformStack.length/2.0, uniformStack[i]/uniformCounter, "point " + i);
-  }
 
   // Setup for the fourth plot 
-  /*plot4 = new GPlot(this);
+  plot4 = new GPlot(this);
   plot4.setPos(370, 350);
   plot4.setYLim(-0.005, 0.1);
   plot4.getTitle().setText("Uniform distribution (" + str(uniformCounter) + " points)");
@@ -133,7 +77,7 @@ public void setup() {
   plot4.getXAxis().getAxisLabel().setText("x variable");
   plot4.getYAxis().getAxisLabel().setText("Relative probability");
   plot4.setPoints(points4);
-  plot4.startHistograms(GPlot.VERTICAL);*/
+  plot4.startHistograms(GPlot.VERTICAL);
 
   // Setup the mouse actions
   plot1.activatePanning();
@@ -141,7 +85,7 @@ public void setup() {
   plot1.activatePointLabels();
   plot2.activateZooming(1.5);
   plot3.activateCentering(LEFT, GPlot.CTRLMOD);
-  /*plot4.activateZooming();*/
+  plot4.activateZooming();
 
   // Load some images and shapes to use later in the plots
   mug = loadImage("beermug.png");
@@ -160,30 +104,11 @@ public void draw() {
   plot1.drawBox();
   plot1.drawXAxis();
   plot1.drawYAxis();
-  plot1.drawTopAxis();
-  plot1.drawRightAxis();
   plot1.drawTitle();
-  plot1.drawFilledContours(GPlot.HORIZONTAL, 0.05);
-  plot1.drawPoint(new GPoint(65, 1.5), mug);
-  plot1.drawPolygon(polygonPoints, color(255, 200));
-  plot1.drawLabels();
+  plot1.drawGridLines(GPlot.BOTH);
+  plot1.drawLines();
+  plot1.drawPoints(star);
   plot1.endDraw();
-
-
-  // Add a new point to the second plot if the mouse moves significantly
-  GPoint lastPoint = plot2.getPointsRef().getLastPoint();
-
-  if (lastPoint == null) {
-    plot2.addPoint(mouseX, -mouseY, "(" + str(mouseX) + " , " + str(mouseY) + ")");
-  } 
-  else if (!lastPoint.isValid() || sq(lastPoint.getX() - mouseX) + sq(lastPoint.getY() + mouseY) > 2500) {
-    plot2.addPoint(mouseX, -mouseY, "(" + str(mouseX) + " , " + str(-mouseY) + ")");
-  }
-
-  // Reset the points if the user pressed the space bar
-  if (keyPressed && key == ' ') {
-    plot2.setPoints(new GPointsArray());
-  }
 
   // Draw the second plot  
   plot2.beginDraw();
@@ -197,86 +122,27 @@ public void draw() {
   plot2.drawPoints(star);
   plot2.endDraw();
 
-
-  // Add one more point to the gaussian stack
-  int index = int(gaussianStack.length/2 + (float) r.nextGaussian());
-
-  if (index >= 0 && index < gaussianStack.length) {
-    gaussianStack[index]++;
-    gaussianCounter++;
-
-    GPointsArray points3 = new GPointsArray(gaussianStack.length);
-
-    for (int i = 0; i < gaussianStack.length; i++) {
-      points3.add(i + 0.5 - gaussianStack.length/2.0, gaussianStack[i]/gaussianCounter, "H" + i);
-    }
-
-    plot3.setPoints(points3);
-    plot3.getTitle().setText("Gaussian distribution (" + str(gaussianCounter) + " points)");
-  }
-
   // Draw the third plot  
   plot3.beginDraw();
   plot3.drawBackground();
   plot3.drawBox();
+  plot3.drawXAxis();
   plot3.drawYAxis();
   plot3.drawTitle();
-  plot3.drawHistograms();
+  plot3.drawGridLines(GPlot.BOTH);
+  plot3.drawLines();
+  plot3.drawPoints(star);
   plot3.endDraw();
 
-
-  // Actions over the fourth plot (scrolling)
- /* if (plot4.isOverBox(mouseX, mouseY)) {
-    // Get the cursor relative position inside the inner plot area
-    float[] relativePos = plot4.getRelativePlotPosAt(mouseX, mouseY);
-
-    // Move the x axis 
-    if (relativePos[0] < 0.2) {
-      plot4.moveHorizontalAxesLim(2);
-    }
-    else if (relativePos[0] > 0.8) {
-      plot4.moveHorizontalAxesLim(-2);
-    }
-
-    // Move the y axis 
-    if (relativePos[1] < 0.2) {
-      plot4.moveVerticalAxesLim(2);
-    } 
-    else if (relativePos[1] > 0.8) {
-      plot4.moveVerticalAxesLim(-2);
-    }
-
-    // Change the inner area bg color
-    plot4.setBoxBgColor(color(200, 100));
-  }
-  else {
-    plot4.setBoxBgColor(color(200, 50));
-  }*/
-
-  // Add one more point to the uniform stack
-/*  index = int(random(uniformStack.length));
-
-  if (index >= 0 && index < uniformStack.length) {
-    uniformStack[index]++;
-    uniformCounter++;
-
-    GPointsArray points4 = new GPointsArray(uniformStack.length);
-
-    for (int i = 0; i < uniformStack.length; i++) {
-      points4.add(i + 0.5 - uniformStack.length/2.0, uniformStack[i]/uniformCounter, "point " + i);
-    }
-
-    plot4.setPoints(points4);
-    plot4.getTitle().setText("Uniform distribution (" + str(uniformCounter) + " points)");
-  }*/
-
   // Draw the forth plot  
-/*  plot4.beginDraw();
+  plot4.beginDraw();
   plot4.drawBackground();
   plot4.drawBox();
   plot4.drawXAxis();
   plot4.drawYAxis();
   plot4.drawTitle();
-  plot4.drawHistograms();
-  plot4.endDraw();*/
+  plot4.drawGridLines(GPlot.BOTH);
+  plot4.drawLines();
+  plot4.drawPoints(star);
+  plot4.endDraw();
 }
