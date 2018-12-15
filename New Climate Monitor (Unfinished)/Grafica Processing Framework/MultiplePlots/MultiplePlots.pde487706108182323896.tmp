@@ -19,7 +19,7 @@ public void setup() {
   plot1 = new GPlot(this);
   plot1.setPos(0, 20);
   plot1.setDim(1220, 100);
-  plot1.getTitle().setText("Temperature (\u00B0C)");
+  plot1.getTitle().setText("Temperature (\u00B0 C)");
   //plot1.getXAxis().getAxisLabel().setText("mouseX");
   //plot1.getYAxis().getAxisLabel().setText("-mouseY");
 
@@ -40,7 +40,7 @@ public void setup() {
   plot4 = new GPlot(this);
   plot4.setPos(0, 530);
   plot4.setDim(1220, 100);
-  plot4.getTitle().setText("Approximate PM2.5 (\u03BCg/m\u00B3)");
+  plot4.getTitle().setText("Approximate PM2.5 (mg/m3)");
  // plot4.getXAxis().getAxisLabel().setText("mouseX");
  //plot4.getYAxis().getAxisLabel().setText("-mouseY");
 
