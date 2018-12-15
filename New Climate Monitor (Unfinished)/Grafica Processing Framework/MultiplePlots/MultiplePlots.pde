@@ -10,17 +10,20 @@ public GPlot plot1, plot2, plot3, plot4;
 //public int uniformCounter;
 //public PImage mug;
 public PShape star;
+PFont f;
 //public Random r;
 
 public void setup() {
   size(1366, 768);
+  f = createFont("Arial",11,true);
+  
 
 
 
 
   plot1 = new GPlot(this);
-  plot1.setPos(0, 0);
-  plot1.setDim(1000, 100);
+  plot1.setPos(0, 50);
+  plot1.setDim(1300, 100);
   plot1.getTitle().setText("Temperature (C)");
   //plot1.getXAxis().getAxisLabel().setText("mouseX");
   plot1.getYAxis().getAxisLabel().setText("-mouseY");
@@ -40,7 +43,7 @@ public void setup() {
   plot3.getYAxis().getAxisLabel().setText("-mouseY");
   
   plot4 = new GPlot(this);
-  plot4.setPos(0, 600);
+  plot4.setPos(0, 500);
   plot4.setDim(1000, 100);
   plot4.getTitle().setText("Approximate PM2.5 (mg/m3)");
  // plot4.getXAxis().getAxisLabel().setText("mouseX");
@@ -96,4 +99,10 @@ public void draw() {
   plot4.drawGridLines(GPlot.BOTH);
   plot4.drawLines();
   plot4.endDraw();
+  
+  textAlign(CENTER);
+  textFont(f,11);
+  fill(0);
+  text("Approximate PM2.5 Concentration in Teotitlán de Flores de Magon, Oaxaca", width / 2, 620);
+  text("Last updated " + str(day()) + "/" + str(month()) + "/" + str(year()) + " " + str(hour()) + ":" + str(minute()) + ". Bars represent half hour intervals. Units: μg/m3", width / 2, 640);
 }
