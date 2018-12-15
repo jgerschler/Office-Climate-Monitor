@@ -1,21 +1,16 @@
-
 import grafica.*;
 import java.util.Random;
 
-public GPlot plot1, plot2, plot3, plot4;
+GPlot plot1, plot2, plot3, plot4;
 
 //public PShape star;
 //PFont f;
 
-public void setup() {
+void setup() {
   size(1366, 768);
   this.surface.setTitle("Environmental Monitor");
   //f = createFont("Arial",11,true);
   
-
-
-
-
   plot1 = new GPlot(this);
   plot1.setPos(0, 20);
   plot1.setDim(1220, 100);
@@ -43,15 +38,11 @@ public void setup() {
   plot4.getTitle().setText("Approximate PM2.5 (\u03BCg/m\u00B3)");
  // plot4.getXAxis().getAxisLabel().setText("mouseX");
  //plot4.getYAxis().getAxisLabel().setText("-mouseY");
-
-
 }
 
-
-public void draw() {
+void draw() {
   background(255);
 
-  // Draw the first plot
   plot1.beginDraw();
   plot1.drawBackground();
   plot1.drawBox();
@@ -62,7 +53,6 @@ public void draw() {
   plot1.drawLines();
   plot1.endDraw();
 
-  // Draw the second plot  
   plot2.beginDraw();
   plot2.drawBackground();
   plot2.drawBox();
@@ -73,7 +63,6 @@ public void draw() {
   plot2.drawLines();
   plot2.endDraw();
 
-  // Draw the third plot  
   plot3.beginDraw();
   plot3.drawBackground();
   plot3.drawBox();
@@ -84,7 +73,6 @@ public void draw() {
   plot3.drawLines();
   plot3.endDraw();
 
-  // Draw the forth plot  
   plot4.beginDraw();
   plot4.drawBackground();
   plot4.drawBox();
