@@ -50,20 +50,20 @@ void draw () {
     else if (sensorVals[i] < 21) {
       pointColors[i] = color(255, 255, 0);
     }
-    else if (sensorVals[i] < 21) {
-      pointColors[i] = color(255, 255, 0);
+    else if (sensorVals[i] < 31) {
+      pointColors[i] = color(255, 165, 0);
     }
-    else if (sensorVals[i] < 21) {
-      pointColors[i] = color(255, 255, 0);
+    else if (sensorVals[i] < 41) {
+      pointColors[i] = color(255, 0, 0);
     }
-    else if (sensorVals[i] < 21) {
-      pointColors[i] = color(255, 255, 0);
+    else if (sensorVals[i] < 51) {
+      pointColors[i] = color(75, 0, 130);
     }
-    else if (sensorVals[i] < 21) {
-      pointColors[i] = color(255, 255, 0);
+    else if (sensorVals[i] < 61) {
+      pointColors[i] = color(128, 0, 0);
     }
     else {
-      pointColors[i] = color(255, 165, 0);
+      pointColors[i] = color(0, 0, 0);
     }    
   }
   
