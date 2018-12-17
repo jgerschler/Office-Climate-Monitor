@@ -1,0 +1,2 @@
+analog test source --> quad formatted string
+SensorPlotterTestColorsLargeArray --> recieve, parse string and plot data on all 4 plots
