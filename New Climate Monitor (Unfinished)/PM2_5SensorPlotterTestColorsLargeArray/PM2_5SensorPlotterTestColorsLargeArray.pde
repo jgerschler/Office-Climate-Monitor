@@ -44,22 +44,22 @@ void draw () {
   color[] pointColors = new color[numVals];
   for (int i=0; i < index; i++) {
     points.add(i+1, sensorVals[i]);
-    if (sensorVals[i] < 11) {
+    if (sensorVals[i] < 51) {
       pointColors[i] = color(0, 255, 0);
     }
-    else if (sensorVals[i] < 21) {
+    else if (sensorVals[i] < 101) {
       pointColors[i] = color(255, 255, 0);
     }
-    else if (sensorVals[i] < 31) {
+    else if (sensorVals[i] < 151) {
       pointColors[i] = color(255, 165, 0);
     }
-    else if (sensorVals[i] < 41) {
+    else if (sensorVals[i] < 201) {
       pointColors[i] = color(255, 0, 0);
     }
-    else if (sensorVals[i] < 51) {
+    else if (sensorVals[i] < 301) {
       pointColors[i] = color(138, 43, 226);
     }
-    else if (sensorVals[i] < 61) {
+    else if (sensorVals[i] < 501) {
       pointColors[i] = color(178, 34, 34);
     }
     else {
