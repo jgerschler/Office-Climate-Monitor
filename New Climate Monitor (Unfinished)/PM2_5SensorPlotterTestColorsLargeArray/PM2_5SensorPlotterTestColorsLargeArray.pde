@@ -57,10 +57,10 @@ void draw () {
       pointColors[i] = color(255, 0, 0);
     }
     else if (sensorVals[i] < 51) {
-      pointColors[i] = color(75, 0, 130);
+      pointColors[i] = color(138, 43, 226);
     }
     else if (sensorVals[i] < 61) {
-      pointColors[i] = color(128, 0, 0);
+      pointColors[i] = color(178, 34, 34);
     }
     else {
       pointColors[i] = color(0, 0, 0);
