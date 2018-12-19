@@ -38,21 +38,27 @@ void setup () {
   plot2.setPos(0, 190);
   plot2.setDim(1220, 100);
   plot2.setXLim(1, 100);
-  plot2.setLineColor(color(255, 100, 255));
+  plot2.setPointSize(5);
+  plot2.setLineColor(color(255, 0, 0));
+  plot2.setPointColor(color(255, 0, 0));
   plot2.getTitle().setText("Humidity (%)");
 
   plot3 = new GPlot(this);
   plot3.setPos(0, 360);
   plot3.setDim(1220, 100);
   plot3.setXLim(1, 100);
-  plot3.setLineColor(color(255, 100, 0));
+  plot3.setPointSize(5);
+  plot3.setLineColor(color(0, 255, 0));
+  plot3.setPointColor(color(0, 255, 0));
   plot3.getTitle().setText("Barometric Pressure (cPa)");
   
   plot4 = new GPlot(this);
   plot4.setPos(0, 530);
   plot4.setDim(1220, 100);
   plot4.setXLim(1, 100);
-  plot4.setLineColor(color(0, 100, 255));
+  plot4.setPointSize(5);
+  plot4.setLineColor(color(0, 0, 255));
+  plot4.setPointColor(color(0, 0, 255));
   plot4.getTitle().setText("Temperature (\u00B0C)");
 }
 
@@ -113,10 +119,11 @@ void draw () {
   plot2.drawYAxis();
   plot2.drawTitle();
   plot2.drawGridLines(GPlot.BOTH);
-  //plot2.drawPoints();
+  plot2.drawPoints();
   plot2.drawLines();
   plot2.endDraw();
   
+  plot3.setPoints(BarometricPoints);
   plot3.beginDraw();
   plot3.drawBackground();
   plot3.drawBox();
@@ -124,9 +131,11 @@ void draw () {
   plot3.drawYAxis();
   plot3.drawTitle();
   plot3.drawGridLines(GPlot.BOTH);
+  plot3.drawPoints();
   plot3.drawLines();
   plot3.endDraw();
 
+  plot4.setPoints(TemperaturePoints);
   plot4.beginDraw();
   plot4.drawBackground();
   plot4.drawBox();
@@ -134,6 +143,7 @@ void draw () {
   plot4.drawYAxis();
   plot4.drawTitle();
   plot4.drawGridLines(GPlot.BOTH);
+  plot4.drawPoints();
   plot4.drawLines();
   plot4.endDraw();  
 }
