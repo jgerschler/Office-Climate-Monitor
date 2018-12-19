@@ -1,14 +1,24 @@
 import grafica.*;
-import java.util.Random;
+//import java.util.Random;
 import processing.serial.*;
 
-GPlot plot1, plot2, plot3, plot4;
-Serial myPort;        
-float inByte = 0;
 int index = 0;
-float[] sensorVals = new float[100];
-int numVals = sensorVals.length;//Length of Sensor Array for Plot Loop
-GPointsArray points = new GPointsArray(numVals);
+int numVals = 100;
+
+float inByte = 0;
+
+float[] PM25Vals = new float[numVals];
+float[] HumidityVals = new float[numVals];
+float[] BarometricVals = new float[numVals];
+float[] TemperatureVals = new float[numVals];
+
+GPointsArray PM25Points = new GPointsArray(numVals);
+GPointsArray HumidityPoints = new GPointsArray(numVals);
+GPointsArray BarometricPoints = new GPointsArray(numVals);
+GPointsArray TemperaturePoints = new GPointsArray(numVals);
+
+GPlot plot1, plot2, plot3, plot4;
+Serial myPort;   
 
 void setup () {
   size(1366, 768);
@@ -26,40 +36,43 @@ void setup () {
   plot2 = new GPlot(this);
   plot2.setPos(0, 190);
   plot2.setDim(1220, 100);
+  plot1.setXLim(1, 100);
   plot2.getTitle().setText("Humidity (%)");
 
   plot3 = new GPlot(this);
   plot3.setPos(0, 360);
   plot3.setDim(1220, 100);
+  plot1.setXLim(1, 100);
   plot3.getTitle().setText("Barometric Pressure (cPa)");
   
   plot4 = new GPlot(this);
   plot4.setPos(0, 530);
   plot4.setDim(1220, 100);
+  plot1.setXLim(1, 100);
   plot4.getTitle().setText("Temperature (\u00B0C)");
 }
 
 void draw () {
-  points = new GPointsArray();
+  PM25Points = new GPointsArray();
   color[] pointColors = new color[numVals];
   for (int i=0; i < index; i++) {
-    points.add(i+1, sensorVals[i]);
-    if (sensorVals[i] < 51) {
+    PM25Points.add(i+1, PM25Vals[i]);
+    if (PM25Vals[i] < 51) {
       pointColors[i] = color(0, 255, 0);
     }
-    else if (sensorVals[i] < 101) {
+    else if (PM25Vals[i] < 101) {
       pointColors[i] = color(255, 255, 0);
     }
-    else if (sensorVals[i] < 151) {
+    else if (PM25Vals[i] < 151) {
       pointColors[i] = color(255, 165, 0);
     }
-    else if (sensorVals[i] < 201) {
+    else if (PM25Vals[i] < 201) {
       pointColors[i] = color(255, 0, 0);
     }
-    else if (sensorVals[i] < 301) {
+    else if (PM25Vals[i] < 301) {
       pointColors[i] = color(138, 43, 226);
     }
-    else if (sensorVals[i] < 501) {
+    else if (PM25Vals[i] < 501) {
       pointColors[i] = color(178, 34, 34);
     }
     else {
@@ -69,7 +82,7 @@ void draw () {
   
   background(255);
  
-  plot1.setPoints(points);
+  plot1.setPoints(PM25Points);
   plot1.setPointColors(pointColors); 
   plot1.beginDraw();
   plot1.drawBackground();
@@ -119,7 +132,7 @@ void serialEvent (Serial myPort) {
   if (inString != null) {
     inString = trim(inString);
     inByte = float(inString);
-    sensorVals[index] = inByte;
+    PM25Vals[index] = inByte;
     index++;
     if (index == 100) {
       index = 0;
