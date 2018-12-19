@@ -31,6 +31,7 @@ void setup () {
   plot1.setPos(0, 20);
   plot1.setDim(1220, 100);
   plot1.setXLim(1, 100);
+  plot1.setPointSize(5);
   plot1.getTitle().setText("Approximate PM2.5 (\u03BCg/m\u00B3)");
 
   plot2 = new GPlot(this);
@@ -63,6 +64,9 @@ void draw () {
   color[] pointColors = new color[numVals];
   for (int i=0; i < index; i++) {
     PM25Points.add(i+1, PM25Vals[i]);
+    HumidityPoints.add(i+1, HumidityVals[i]);
+    BarometricPoints.add(i+1, BarometricVals[i]);
+    TemperaturePoints.add(i+1, TemperatureVals[i]);
     if (PM25Vals[i] < 51) {
       pointColors[i] = color(0, 255, 0);
     }
@@ -101,6 +105,7 @@ void draw () {
   plot1.drawLines();
   plot1.endDraw();
 
+  plot2.setPoints(HumidityPoints);
   plot2.beginDraw();
   plot2.drawBackground();
   plot2.drawBox();
@@ -108,9 +113,10 @@ void draw () {
   plot2.drawYAxis();
   plot2.drawTitle();
   plot2.drawGridLines(GPlot.BOTH);
+  //plot2.drawPoints();
   plot2.drawLines();
   plot2.endDraw();
-
+  
   plot3.beginDraw();
   plot3.drawBackground();
   plot3.drawBox();
