@@ -8,6 +8,7 @@ const int vout = A0;                                            //analog input
 
 float density, voltage;
 int   adcvalue;
+int pm25;
 
 int Filter(int m)
 {
@@ -69,31 +70,12 @@ void loop(void)
   }
   else
     density = 0;
-    
-  Serial.println(density);
+
+  pm25 = (int) density;
+  String pm25String = String(pm25);
+  String dataString = pm25String + "-" + pm25String + "-" + pm25String + "-" + pm25String;
+
+  Serial.println(dataString);
   
   delay(1000);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

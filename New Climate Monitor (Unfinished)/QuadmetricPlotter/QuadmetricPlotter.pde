@@ -153,11 +153,12 @@ void serialEvent (Serial myPort) {
 
   if (inString != null) {
     inString = trim(inString);
-    inByte = float(inString);
-    PM25Vals[index] = inByte;
-    HumidityVals[index] = inByte;
-    BarometricVals[index] = inByte;
-    TemperatureVals[index] = inByte;
+    println(inString);
+    int[] nums = int(split(inString, '-'));
+    PM25Vals[index] = nums[0];
+    HumidityVals[index] = nums[1];
+    BarometricVals[index] = nums[2];
+    TemperatureVals[index] = nums[3];
     index++;
     if (index == 100) {
       index = 0;
