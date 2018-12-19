@@ -36,24 +36,30 @@ void setup () {
   plot2 = new GPlot(this);
   plot2.setPos(0, 190);
   plot2.setDim(1220, 100);
-  plot1.setXLim(1, 100);
+  plot2.setXLim(1, 100);
+  plot2.setLineColor(color(255, 100, 255));
   plot2.getTitle().setText("Humidity (%)");
 
   plot3 = new GPlot(this);
   plot3.setPos(0, 360);
   plot3.setDim(1220, 100);
-  plot1.setXLim(1, 100);
+  plot3.setXLim(1, 100);
+  plot3.setLineColor(color(255, 100, 0));
   plot3.getTitle().setText("Barometric Pressure (cPa)");
   
   plot4 = new GPlot(this);
   plot4.setPos(0, 530);
   plot4.setDim(1220, 100);
-  plot1.setXLim(1, 100);
+  plot4.setXLim(1, 100);
+  plot4.setLineColor(color(0, 100, 255));
   plot4.getTitle().setText("Temperature (\u00B0C)");
 }
 
 void draw () {
   PM25Points = new GPointsArray();
+  HumidityPoints = new GPointsArray();
+  BarometricPoints = new GPointsArray();
+  TemperaturePoints = new GPointsArray();
   color[] pointColors = new color[numVals];
   for (int i=0; i < index; i++) {
     PM25Points.add(i+1, PM25Vals[i]);
@@ -133,6 +139,9 @@ void serialEvent (Serial myPort) {
     inString = trim(inString);
     inByte = float(inString);
     PM25Vals[index] = inByte;
+    HumidityVals[index] = inByte;
+    BarometricVals[index] = inByte;
+    TemperatureVals[index] = inByte;
     index++;
     if (index == 100) {
       index = 0;
