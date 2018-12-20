@@ -1,2 +1,4 @@
-analog test source --> quad formatted string
-SensorPlotterTestColorsLargeArray --> recieve, parse string and plot data on all 4 plots
+Fix labels
+Add current value box
+adjust update time
+move to linux
