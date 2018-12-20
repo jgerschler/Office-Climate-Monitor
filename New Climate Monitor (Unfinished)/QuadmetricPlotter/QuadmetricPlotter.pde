@@ -4,6 +4,7 @@ import processing.serial.*;
 
 int index = 0;
 int numVals = 100;
+int[] nums = {0, 0, 0, 0};
 
 float inByte = 0;
 
@@ -153,15 +154,17 @@ void serialEvent (Serial myPort) {
 
   if (inString != null) {
     inString = trim(inString);
-    println(inString);
-    int[] nums = int(split(inString, '-'));
-    PM25Vals[index] = nums[0];
-    HumidityVals[index] = nums[1];
-    BarometricVals[index] = nums[2];
-    TemperatureVals[index] = nums[3];
-    index++;
-    if (index == 100) {
-      index = 0;
+    nums = int(split(inString, '-'));
+    if (nums.length == 4) {
+      PM25Vals[index] = nums[0];
+      HumidityVals[index] = nums[1];
+      BarometricVals[index] = nums[2];
+      TemperatureVals[index] = nums[3];
+      index++;
+      if (index == 100) {
+        index = 0;
+      }
     }
+    println(nums);
   }
 }
